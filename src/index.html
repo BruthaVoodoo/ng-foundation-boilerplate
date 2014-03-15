@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app" ng-controller="appController">
 <head>
-    <title>my-ng-boilerplate</title>
+    <title>{{ pageTitle }}</title>
 
     <!-- Modernizr -->
     <script type="text/javascript" src="js/jsHead.js"></script>
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body ng-app="app">
+<body>
     <!-- Header/Main Navigation -->
     <header ng-include="'common/nav.tpl.html'"></header>
     <!-- End Header/Main Navigation -->

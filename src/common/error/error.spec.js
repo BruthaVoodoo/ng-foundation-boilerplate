@@ -1,8 +1,8 @@
-describe('Unit: Testing Module - app.about', function () {
+describe('Unit: Testing Module - app.error', function () {
     var module;
 
     beforeEach(function () {
-        module = angular.module('app.about');
+        module = angular.module('app.error');
     });
 
     it('should be registered', function () {
@@ -15,7 +15,7 @@ describe('Unit: Testing Module - app.about', function () {
 
 
         beforeEach(function () {
-            deps = module.value('app.about').requires;
+            deps = module.value('app.error').requires;
         });
 
         hasModule = function (m) {

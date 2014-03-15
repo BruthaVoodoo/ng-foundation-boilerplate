@@ -1,17 +1,34 @@
-describe( 'homeController', function(){
-    describe( 'isCurrentUrl', function(){
-        var appCtrl, $location, $scope;
+describe('Unit: Testing Module - app.home', function () {
+    var module;
 
-        beforeEach( module('app'));
+    beforeEach(function () {
+        module = angular.module('app.home');
+    });
 
-        beforeEach(inject(function($controller, _$location_, $rootScope){
-            $location = _$location_;
-            $scope = $rootScope;
-            appCtrl = $controller( 'homeController', {$location: $location, $scope: $scope});
-        }));
+    it('should be registered', function () {
+        expect(module).toBeDefined;
+    });
 
-        it( 'should pass a dummy test', inject(function(){
-            expect(appCtrl).toBeTruthy();
-        }))
+
+    describe('Testing Dependencies', function () {
+        var deps, hasModule;
+
+
+        beforeEach(function () {
+            deps = module.value('app.home').requires;
+        });
+
+        hasModule = function (m) {
+            return deps.indexOf(m) >= 0;
+        };
+
+
+        /*
+         Testing for dependencies. List below all the dependencies that this
+         module requires.
+         */
+        it('should have "ui.router" as a dependency', function () {
+            expect(hasModule('ui.router')).toEqual(true);
+        });
     });
 });

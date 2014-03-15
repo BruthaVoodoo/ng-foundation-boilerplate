@@ -10,18 +10,23 @@ module.exports = function(karma){
             'vendor/angular-ui-router/release/angular-ui-router.js',
             'vendor/angular-mocks/angular-mocks.js',
             'dev/tpl/*.js',
+            'src/common/**/*.js',
             'src/app/**/*.js',
             'src/app/**/*.spec.js'
         ],
 
-        frameworks: ['jasmine'],
+        plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-html-reporter'],
 
-        plugins: ['karma-jasmine', 'karma-firefox-launcher', 'karma-chrome-launcher'],
+        frameworks: ['jasmine'],
 
         /*
             How to report, by default.
         */
-        reporters: 'dots',
+        reporters: ['html'],
+
+        htmlReporter:{
+            outputDir: 'karma'
+        },
 
         /*
             On which port should the browser connect, on which port is the test runner

@@ -38,19 +38,19 @@ module.exports = function(grunt){
             This is a collection of file definitions we use in the configuration of
             build tasks.
 
-            "js": All project javascript files.
-            "appHtmlTpl": All app html template files.
-            "cmnHtmlTpl": All common app template files.
-            "html": Our main html file.
-            "sass": Our main scss file.
+            "js":           All project javascript files.
+            "appHtmlTpl":   All app html template files.
+            "cmnHtmlTpl":   All common app template files.
+            "html":         Our main html file.
+            "testIncludes": All js libs needed for unit tests
+            "specFiles":    All js files that are unit tests '*.spec.js'
+            "sass":         Our main scss file.
         */
         src:{
             js: ['src/**/*.js', '!src/**/*.spec.js'],
             appHtmlTpl: ['src/app/**/*.tpl.html'],
             cmnHtmlTpl: ['src/common/**/*.tpl.html'],
             html2js: ['<%= devDir %>/tpl/*.js'],
-            testIncludes: ['dev/tpl/**/*.js'],
-            specFiles: ['src/app/**/*.spec.js'],
             html: 'src/index.html',
             sass: 'src/sass/main.scss'
         },
@@ -88,7 +88,8 @@ module.exports = function(grunt){
                 force: true
             },
             dev: ['<%= devDir %>', '<%= www %>'],
-            prod: ['<%= prodDir %>']
+            prod: ['<%= prodDir %>'],
+            www: ['<%= www %>']
         },
 
 
@@ -188,10 +189,6 @@ module.exports = function(grunt){
 
             gruntfile:[
                 'Gruntfile.js'
-            ],
-
-            test:[
-                '<%= src.unit %>'
             ]
         },
 
@@ -295,115 +292,6 @@ module.exports = function(grunt){
                 cwd: 'dev',
                 expand: true
             }
-        },
-
-
-        /*
-            Karma test runner. Config information for running Karma
-        */
-        karma:{
-            options: {
-                configFile: 'karma/karma-unit.js'
-            },
-
-            unit:{
-                background: true
-            },
-
-            continuous: {
-                singleRun: true
-            }
-        },
-
-
-        /*
-            For rapid development we have a watch set up to check if any of the files
-            listed below have changed. If so then execute the listed task. This saves
-            us from having to type "grunt" into the command-line every time we make a
-            change in our app. All we have to do is type "grunt watch" once in the
-            command-line and it will run in the background.
-        */
-        delta: {
-            /*
-                By default, we want the Live Reload to work for all tasks. This is overridden
-                in some tasks (like this file) where browser resources are unaffected. It runs
-                by default on port 35729, which your browser plugin should auto-detect.
-            */
-            options: {
-                livereload: true
-            },
-
-
-            /*
-                When the Gruntfile changes, we just want to lint it. That said, the watch will have
-                to be restarted if you want it to take advantage of the changes.
-            */
-            gruntfile: {
-                files: 'Gruntfile.js',
-                tasks: ['jshint:gruntfile'],
-                options: {
-                    livereload: false
-                }
-            },
-
-
-            // Compiles the css from scss files.
-            sassBuild: {
-                files: 'src/sass/*.scss',
-                tasks: ['sassCompile:dev']
-            },
-
-
-            /*
-                When the 'index.html' file changes, run the 'index' task to copy and
-                compile it to the 'dev' dir.
-            */
-            html:{
-                files: ['<%= src.html %>'],
-                tasks: ['index:dev']
-            },
-
-
-            tpls:{
-                files:[
-                    '<%= src.appHtmlTpl %>',
-                    '<%= src.cmnHtmlTpl %>'
-                ],
-                tasks:[
-                    'html2js:dev',
-                    'concat:dev'
-                ]
-            },
-
-
-            /*
-                When assets are changed, copy them. Not that this will 'not' copy new files
-                added.
-
-                Note: Probably not very usefull. will have to look into something different.
-            */
-            assets:{
-                files: [
-                    'src/assets/**/*'
-                ],
-                tasks: ['copy:dev']
-            },
-
-
-            /*
-                When our source files change we want to run most of our build tasks
-            */
-            src:{
-                files:[
-                    '<%= src.js %>'
-                ],
-                tasks: [
-                    'jshint:src',
-                    'concat:dev:app',
-                    'ngmin:dist',
-                    'karma:unit:run'
-                ]
-            }
         }
     });
 
@@ -422,22 +310,8 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-ngmin');
-    grunt.loadNpmTasks('grunt-karma');
 
 
-    /*
-        In order to make it safe to just compile or copy *only* what was changed,
-        we need to ensure we are starting from a clean, fresh build. So we rename
-        the `watch` task to `delta` (that's why the configuration var above is
-        `delta`) and then add a new task called `watch` that does a clean build
-        before watching for changes.
-    */
-    grunt.renameTask( 'watch', 'delta' );
-    grunt.registerTask( 'watch', [ 'default', 'delta' ] );
-
-
-    //Default task(s). These tasks are run when you type 'grunt watch' in your console.
-    grunt.registerTask('default', ['buildDev']);
     grunt.registerTask('buildDev',
         [
             'clean:dev',
@@ -445,7 +319,6 @@ module.exports = function(grunt){
             'jshint:src',
             'concat:dev',
             'index:dev',
-            'karma:continuous',
             'copy:dev',
             'copy:www'
         ]);
