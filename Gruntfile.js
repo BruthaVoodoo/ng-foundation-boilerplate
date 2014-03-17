@@ -3,7 +3,6 @@ module.exports = function(grunt){
     grunt.initConfig({
         // Read in the "package.json" file so we can access the name and version.
         pkg: grunt.file.readJSON('package.json'),
-        env: grunt.file.readJSON('environment.json'),
 
 
         /*
@@ -13,7 +12,7 @@ module.exports = function(grunt){
         */
         devDir: 'dev',
         prodDir: 'prod',
-        www: '/Users/BruthaVudu/Sites/wordpressTest/www',
+        www: '/Users/BruthaVudu/Sites/ngFoundationBoilerplate/www',
 
 
         /*
@@ -288,7 +287,7 @@ module.exports = function(grunt){
 
             www:{
                 src: ['**'],
-                dest: '/Users/BruthaVudu/Sites/wordpressTest/www',
+                dest: '/Users/BruthaVudu/Sites/ngFoundationBoilerplate/www',
                 cwd: 'dev',
                 expand: true
             }
@@ -318,6 +317,7 @@ module.exports = function(grunt){
             'html2js:dev',
             'jshint:src',
             'concat:dev',
+            'sassCompile:dev',
             'index:dev',
             'copy:dev',
             'copy:www'
@@ -333,6 +333,7 @@ module.exports = function(grunt){
             'concat:prod',
             'ngmin:dist',
             'uglify:dist',
+            'sassCompile:prod',
             'index:prod',
             'copy:prod'
         ]);
